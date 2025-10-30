@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, render_template
 import paho.mqtt.client as mqtt
 from threading import Lock
+from paho.mqtt.client import Client, CallbackAPIVersion
 
 app = Flask(__name__)
 
@@ -13,9 +14,9 @@ lock = Lock() #objeto de sincronização
 
 
 #configurar o cliente MQTT
-cliente = mqtt.Client()
+cliente =  Client(client_id="", protocol=mqtt.MQTTv311, callback_api_version=CallbackAPIVersion.VERSION2)
 
-def on_connect(cliente, userdata, flags, rc):
+def on_connect(cliente, userdata, flags, rc, properties=None):
     print(f"Conectado ao broker MQTT com código {rc}")
     cliente.subscribe(topico) #subscribe: assinatura
 
@@ -33,16 +34,24 @@ cliente.loop_start()
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html') 
-
-@app.route('/style.css')
-def css():
-    return send_from_directory('.', 'style.css')
+    return render_template('index.html') 
 
 @app.route('/enviar',methods=['POST'])
 def enviar():
     data = request.json
     msg = data.get('mensagem')
+    if not msg:
+        return "Mensagem vazia", 400
+    cliente.publish(topico, msg)
+    return '', 200
+
+@app.route('/mensagens')
+def get_mensagens():
+    with lock:
+        return jsonify(mensagens)
+if __name__ == '__main__':
+    app.run(debug=True)
+
     
 
 
