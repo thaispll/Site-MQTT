@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif ;
+    margin: 20px;
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+h1 {
+    color: #007acc;
+}
+
+#formulario {
+    margin-bottom: 20px;
+}
+
+input #mensagem {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #005fa3;
+}
+
+ul #listaMensagens {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul #listaMensagens li {
+    background-color: white;
+    border: 1px solid #ddd;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+
